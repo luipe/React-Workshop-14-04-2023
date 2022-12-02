@@ -48,6 +48,30 @@ export const Navigation = () => {
     - any dom attributes are supported (some might behave slightly different)
 - Components have a *key* attribute, which should be used on lists
 
+### Example: Styling
+- You can define styling by using an separate css file, and *classnames*
+
+```css, typescript
+/* Navigation.tsx: */
+import "./styles.css";
+
+export const Navigation = () => {
+  return (
+    <div className="Navigation">
+      <NavigationItem label={"Programm"} />
+    </div>
+  );
+};
+
+/* styles.css: */
+.Navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+```
+
+
 ## Built-In Properties: Children
 - All Components have a children property
 - This property contains React-Components which are wrapped inside the Component
