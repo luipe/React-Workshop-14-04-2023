@@ -93,17 +93,6 @@ ReactDOM.render(<HelloWorld />, document.getElementById('root'));
   <img src="img/codeExamples/HelloWorld.jpg" style="width: 100%; box-shadow: none; border: 5px solid black"/>
 </figure>
 
-
-## **Exercise 1**: Create Code Sandbox
-* Got to `https://codesandbox.io` and login
-
-* Click on "Create"
-    * Select "React Typescript"
-
-* Try to change something and see the result!
-
-* Write your own "Hello World" component
-
 ----
 
 ## What files do you see?
