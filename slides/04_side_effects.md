@@ -16,19 +16,24 @@
 #### Example: event listener
 
 ```tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import CatSvg from "./CatSvg";
 
-const AnnoyMe = () => {
+export default function CursorCat() {
+  const [position, setPosition] = useState<{ x: number; y: number }>();
   useEffect(() => {
-    const eventListener = function () {
-      window.alert("You clicked!");
+    const eventListener = function (event: MouseEvent) {
+      setPosition({
+        x: event.clientX + 10,
+        y: event.clientY + 10
+      });
     };
-    document.addEventListener("click", eventListener);
-    return () => document.removeEventListener("click", eventListener);
+    document.addEventListener("mousemove", eventListener);
+    return () => document.removeEventListener("mousemove", eventListener);
   });
 
-  return null;
-};
+  return position ? <CatSvg x={position.x} y={position.y} /> : null;
+}
 ```
 
 [CodeSandbox example](https://codesandbox.io/s/proud-morning-ot5f8p?file=/src/App.js)
@@ -68,28 +73,36 @@ const HelloWorld = () => {
 
 ```tsx
 import { useEffect, useState } from "react";
+import "./styles.css";
+import {Beer} from "./types";
 
-const HelloExternalWorld = () => {
-  const [count, setCount] = useState(0);
-
+export default function App() {
+  const [beer, setBeer] = useState<Beer>();
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        "https://external-click-counter.com/howmanyofthoseclickswegot"
+    const fetchBeer = async () => {
+      const response = await window.fetch(
+              "https://random-data-api.com/api/v2/beers"
       );
-      const parsedResponse = await response.json();
-      setCount((previous) => previous + parsedResponse.numberOfClicks);
+      const parsedResponse = (await response.json()) as Beer;
+      setBeer(parsedResponse);
     };
-    fetchData();
+    fetchBeer();
   }, []);
 
   return (
-    <div onClick={() => setCount((previous) => previous + 1)}>
-      <h1>Hello World!</h1>
-      <p>Click count: {count}</p>
-    </div>
+          <div>
+            <h1>Today's beer </h1>
+            {beer ?
+                    Object.entries(beer).map(([key, val]) => (
+                            <div>
+                              <b>{key}: </b>
+                              <span>{val}</span>
+                            </div>
+                    )) : null}
+          </div>
   );
-};
+}
+
 ```
 
 [CodeSandbox example](https://codesandbox.io/s/frosty-microservice-sjzh00?file=/src/App.js)
@@ -115,6 +128,7 @@ const HelloExternalWorld = () => {
   <img src="img/ComponentLifecycle-mount.png" style="box-shadow: none" alt="component mount"/>
 </figure>
 
+[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/App.tsx)
 ----
 
 ## Component Lifecycle - Update
@@ -123,6 +137,7 @@ const HelloExternalWorld = () => {
   <img src="img/ComponentLifecycle-update.png" style="box-shadow: none" alt="component update"/>
 </figure>
 
+[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/App.tsx)
 ----
 
 ## Component Lifecycle - Unmount
@@ -131,6 +146,7 @@ const HelloExternalWorld = () => {
   <img src="img/ComponentLifecycle-unmount.png" style="box-shadow: none" alt="component unmount"/>
 </figure>
 
+[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/App.tsx)
 ----
 
 ## Rules of Hooks

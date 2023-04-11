@@ -1,7 +1,7 @@
 ## Components
 - The *Components* are the building blocks of each React-Application
 - Components can have logic, and reuse other components
-    - Either basic html components, your own components, or components from libraries
+  - Either basic html components, your own components, or components from libraries
 - For creating a page, first structure it into logical pieces and then create the components for the pieces
 
 ## Example
@@ -29,9 +29,9 @@ export const NavigationItem = (props: { label: string; selected?: boolean }) => 
 // usage:
 export const Navigation = () => {
   return (
-    <div>
-      <NavigationItem label={"Programm"} selected={true} />
-    </div>
+          <div>
+            <NavigationItem label={"Programm"} selected={true} />
+          </div>
   );
 };
 ```
@@ -43,9 +43,9 @@ export const Navigation = () => {
 
 ## Built-In Properties
 - Components for *HTML* tags have built-in properties
-    - *style*/*className*: styling components
-    - *onClick*/*onMouseHover*: mouse interactions
-    - any dom attributes are supported (some might behave slightly different)
+  - *style*/*className*: styling components
+  - *onClick*/*onMouseHover*: mouse interactions
+  - any dom attributes are supported (some might behave slightly different)
 - Components have a *key* attribute, which should be used on lists
 
 ### Example: Styling
@@ -79,18 +79,18 @@ export const Navigation = () => {
 Example:
 ```tsx
 // component:
-export const Navigation = (props) => {
+export const Navigation = (props: PropsWithChildren) => {
   return <div className="Navigation">{props.children}</div>;
 };
 
 // usage:
 export const Header = () => {
-return (
-  <Navigation>
-    <NavigationItem label={"Programm"} />
-    <NavigationItem label={"Speaker"} />
-    <NavigationItem label={"FAQ"} />
-  </Navigation>
+  return (
+          <Navigation>
+            <NavigationItem label={"Programm"} />
+            <NavigationItem label={"Speaker"} />
+            <NavigationItem label={"FAQ"} />
+          </Navigation>
   );
 };
 ```
