@@ -35,7 +35,7 @@ JavaScript library (or toolkit) to build user interfaces
 * 2011 developed at Facebook
 * 2012 used at Instagram
 * 2013 Open Source
-* current version (2022): React 18
+* current version (2023): React 18
 * still actively developed
 
 
@@ -48,10 +48,10 @@ JavaScript library (or toolkit) to build user interfaces
     * DOM
         * Document Object Model = internal representation of the webpage
         * independent of platform or language
-    * virtual: 
+    * virtual:
         * Dynamically generated from JS, not a static HTML file
-* JSX
-    * Javascript Syntax Extension
+* JSX / TSX
+    * Javascript (Typescript) Syntax Extension
     * looks like HTML
     * produces elements for the DOM
 
@@ -70,15 +70,6 @@ function HelloWorld() {
 as a so-called *functional component*
 
 
-### Simplified Notation
-React component *Hello World*
-
-```tsx
-const HelloWorld = () => <h1>Hello World!</h1>;
-```
-as functional component using the *arrow function* notation of JavaScript.
-
-
 ### Inclusion in DOM
 ```tsx
 ReactDOM.render(<HelloWorld />, document.getElementById('root'));
@@ -92,6 +83,11 @@ ReactDOM.render(<HelloWorld />, document.getElementById('root'));
 <figure style="width: 100%">
   <img src="img/codeExamples/HelloWorld.jpg" style="width: 100%; box-shadow: none; border: 5px solid black"/>
 </figure>
+
+
+## **Exercise 1**: Create Code Sandbox
+
+(see exercise slide)
 
 ----
 
@@ -125,9 +121,6 @@ ReactDOM.render(<HelloWorld />, document.getElementById('root'));
 *Further information*
 * styling using Inline-Styles or **css**
 
-Note:
-* Komponenten als Klassen oder funktionale Komponenten darstellbar
-
 ## JSX Syntax
 
 * expressions with HTML-like syntax
@@ -152,8 +145,25 @@ Note:
 
 * Conditional and functional expressions (no if/else or for-loops)
 ```tsx
-    <h1>Hello {name !== undefined ? <b>{name}</b> : <b>unknown</b>}!</h1>
+    return <h1>Hello {name !== undefined ? <b>{name}</b> : <b>unknown</b>}!</h1>;
 ```
+
+* Another example: Flip a coin
+```tsx
+function CoinFlip() {
+    const randomValue = Math.random();
+
+    return <div>The coin landed on {randomValue > 0.5 ? 'head' : 'tail'}.</div>;
+}
+```
+Include in the main application:
+```tsx
+    <div className="App">
+      <CoinFlip />
+    </div>
+```
+
+----
 
 To remember:
 * Everything before the `return` is Typescript
