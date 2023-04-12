@@ -21,10 +21,10 @@ We can retrieve image URLs of cats from https://cataas.com
 ```tsx
 const catProviderUrl = "https://cataas.com";
 
-const fetchCatUrl = async (): Promise<string> => {
+async function fetchCatUrl(): Promise<string> {
   const rawResponse = await fetch(`${catProviderUrl}/cat?json=true`);
   const jsonResponse = await rawResponse.json();
   return catProviderUrl + jsonResponse.url;
-};
+}
 ```
 </details>

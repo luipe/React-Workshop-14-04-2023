@@ -19,9 +19,10 @@
 import { useEffect, useState } from "react";
 import CatSvg from "./CatSvg";
 
-export default function CursorCat() {
+function CursorCat() {
   const [position, setPosition] = useState<{ x: number; y: number }>();
-  useEffect(() => {
+
+  useEffect(function sideEffect() {
     const eventListener = function (event: MouseEvent) {
       setPosition({
         x: event.clientX + 10,
@@ -29,14 +30,16 @@ export default function CursorCat() {
       });
     };
     document.addEventListener("mousemove", eventListener);
-    return () => document.removeEventListener("mousemove", eventListener);
-  });
+    return function cleanUp() {
+      document.removeEventListener("mousemove", eventListener);
+    }
+  })
 
-  return position ? <CatSvg x={position.x} y={position.y} /> : null;
+  return !position ? null : <CatSvg x={position.x} y={position.y}/>;
 }
 ```
 
-[CodeSandbox example](https://codesandbox.io/s/proud-morning-ot5f8p?file=/src/App.js)
+[CodeSandbox example](https://codesandbox.io/s/dreamy-dirac-2ncgyy?file=/src/CursorCat.tsx)
 
 ----
 
@@ -47,23 +50,30 @@ export default function CursorCat() {
 ```tsx
 import { useEffect, useState } from "react";
 
-const HelloWorld = () => {
+function HelloWorld() {
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    document.title = `You clicked ${count} times`;
-  }, [count]);
+  useEffect(
+    function () {
+      document.title = `You clicked ${count} times`;
+    },
+    [count]
+  );
+
+  function handleClick() {
+    setCount((previous) => previous + 1);
+  }
 
   return (
-    <div onClick={() => setCount((previous) => previous + 1)}>
+    <div onClick={handleClick}>
       <h1>Hello World!</h1>
       <p>Click count: {count}</p>
     </div>
   );
-};
+}
 ```
 
-[CodeSandbox example](https://codesandbox.io/s/serene-swartz-4olw34?file=/src/App.js)
+[CodeSandbox example](https://codesandbox.io/s/confident-currying-3vyzp1?file=/src/App.tsx)
 
 ----
 
@@ -73,39 +83,40 @@ const HelloWorld = () => {
 
 ```tsx
 import { useEffect, useState } from "react";
-import "./styles.css";
-import {Beer} from "./types";
+import { Beer } from "./types";
 
-export default function App() {
+function TodaysBeer() {
   const [beer, setBeer] = useState<Beer>();
-  useEffect(() => {
-    const fetchBeer = async () => {
+
+  useEffect(function () {
+    async function fetchBeer() {
       const response = await window.fetch(
-              "https://random-data-api.com/api/v2/beers"
+        "https://random-data-api.com/api/v2/beers"
       );
       const parsedResponse = (await response.json()) as Beer;
       setBeer(parsedResponse);
-    };
+    }
+
     fetchBeer();
   }, []);
 
   return (
+    <div>
+      <h1>Today's beer </h1>
+      {!beer
+        ? null
+        : Object.entries(beer).map(([key, val]) => (
           <div>
-            <h1>Today's beer </h1>
-            {beer ?
-                    Object.entries(beer).map(([key, val]) => (
-                            <div>
-                              <b>{key}: </b>
-                              <span>{val}</span>
-                            </div>
-                    )) : null}
+            <b>{key}: </b>
+            <span>{val}</span>
           </div>
+        ))}
+    </div>
   );
 }
-
 ```
 
-[CodeSandbox example](https://codesandbox.io/s/frosty-microservice-sjzh00?file=/src/App.js)
+[CodeSandbox example](https://codesandbox.io/s/broken-star-qyoqfs?file=/src/App.tsx)
 
 ----
 
@@ -128,7 +139,8 @@ export default function App() {
   <img src="img/ComponentLifecycle-mount.png" style="box-shadow: none" alt="component mount"/>
 </figure>
 
-[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/App.tsx)
+[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/DemoComponent.tsx)
+
 ----
 
 ## Component Lifecycle - Update
@@ -137,7 +149,8 @@ export default function App() {
   <img src="img/ComponentLifecycle-update.png" style="box-shadow: none" alt="component update"/>
 </figure>
 
-[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/App.tsx)
+[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/DemoComponent.tsx)
+
 ----
 
 ## Component Lifecycle - Unmount
@@ -146,7 +159,8 @@ export default function App() {
   <img src="img/ComponentLifecycle-unmount.png" style="box-shadow: none" alt="component unmount"/>
 </figure>
 
-[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/App.tsx)
+[CodeSandbox example](https://codesandbox.io/s/quizzical-tree-ueyvzm?file=/src/DemoComponent.tsx)
+
 ----
 
 ## Rules of Hooks
