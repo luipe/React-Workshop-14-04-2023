@@ -36,26 +36,49 @@ const [counter, setCounter] = useState<number>(0);
     * For this case, there is a second way to use the setter function. Instead of passing a value, you can pass in an *updater function*, which is a callback to calculate the new value from the previous value.
   ```
   ❌ setCounter(counter + 1);
-  ✅ setCounter((previousCounter) => previousCounter + 1);
+  
+  ✅ function increaseByOne(previousValue: number): number {
+         return previousValue + 1;
+      }
+      setCounter(increaseByOne);
   ```
 
 Full example:
 ```
-const App = () => {
+function App() {
   const [counter, setCounter] = useState<number>(0);
 
+  function increaseByOne(previousValue: number): number {
+    return previousValue + 1;
+  }
+
+  function handleClick() {
+    setCounter(increaseByOne);
+  }
+
+  function handleDoubleClick() {
+    setCounter(increaseByOne);
+    setCounter(increaseByOne);
+  }
+
+  function handleResetClick() {
+    setCounter(0);
+  }
+
   return (
-    <div>
+    <div className="App">
       <h1>Number of clicks: {counter}</h1>
-      <button onClick={() => {
-        setCounter((previousCounter) => previousCounter + 1); 
-        setCounter((previousCounter) => previousCounter + 1); 
-        }}>Double click!</button>
-      <button onClick={() => setCounter(0)}>Reset counter</button>
+      <button onClick={handleClick}>Click</button>
+      <button onClick={handleDoubleClick}>Double click</button>
+      <button onClick={handleResetClick}>Reset counter</button>
     </div>
   );
 }
 ```
+You can try this out yourself in our CodeSandbox examples: 
+* [Example that doesn't work because it relies on the value of the state variable having been updated already](https://codesandbox.io/s/react-state-why-does-double-click-not-work-ou3hnl?file=/src/App.tsx)
+* [Fixed example that works because it passes an updater function to the setter function](https://codesandbox.io/s/react-state-double-click-fixed-vttbtf?file=/src/App.tsx)
+* [Working example from above with both ways of using the setter function - updater function and value not depending on current state](https://codesandbox.io/s/react-state-full-example-rbct6z?file=/src/App.tsx)
 
 ### Passing state to child components
 
@@ -64,25 +87,34 @@ A component's state is not accessible to any other component. But a component ma
 Example:
 
 ```
-const ClickDisplay = (props: {numberOfClicks: number}) => (
-  <h1>Number of clicks: {props.numberOfClicks}</h1>
-);
+function ClickDisplay(props: { numberOfClicks: number }) {
+  return <h1>Number of clicks: {props.numberOfClicks}</h1>;
+}
 
-const ClickButton = (props: {handleClick: () => void}) => (
-  <button onClick={props.handleClick}>Click here!</button>
-);
+function ClickButton(props: { handleClick: () => void }) {
+  return <button onClick={props.handleClick}>Click here!</button>;
+}
 
-const App = () => {
+export default function App() {
   const [counter, setCounter] = useState<number>(0);
 
+  function increaseByOne(previousValue: number) {
+    return previousValue + 1;
+  }
+
+  function handleClick() {
+    setCounter(increaseByOne);
+  }
+
   return (
-    <div>
-      <ClickDisplay numberOfClicks={counter}/>
-      <ClickButton handleClick={() => setCounter((previousCounter) => previousCounter + 1)}/>
+    <div className="App">
+      <ClickDisplay numberOfClicks={counter} />
+      <ClickButton handleClick={handleClick} />
     </div>
   );
 }
 ```
+[Link to Example in CodeSandbox](https://codesandbox.io/s/react-state-passing-state-to-child-components-458ubu?file=/src/App.tsx:58-693)
 
 ## Resources
 [General concept of state in React](https://react.dev/learn/state-a-components-memory)
